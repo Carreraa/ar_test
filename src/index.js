@@ -127,7 +127,7 @@ window.onload = function() {
 
             // it it finds the videoSource 'environment', modify constraints.video
             for (const sourceInfo of sourceInfos) {
-                if(sourceInfo.kind ==='video' && sourceInfo.facing ==='environment') {
+                if(sourceInfo.kind ==='video' && sourceInfo.facing ==='user') {
                     constraints.video = {
                         optional: [{sourceId: sourceInfo.id}]
                     };
