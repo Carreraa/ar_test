@@ -129,6 +129,7 @@ window.onload = function() {
                 //这里会遍历audio,video，所以要加以区分
                 if (sourceInfo.kind === 'video') {
                     exArray.push(sourceInfo.id);
+                    alert(sourceInfo.id);
                 }
             }
         })
