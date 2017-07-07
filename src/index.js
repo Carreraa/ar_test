@@ -117,32 +117,40 @@ window.onload = function() {
         domElement.style.height = '100%';
 
         // get the media sources
-        MediaStreamTrack.getSources(sourceInfos => {
-            // define getUserMedia() constraints
+        var exArray = []; //存储设备源ID
+        MediaStreamTrack.getSources(function (sourceInfos) {
             const constraints = {
                 video: true,
                 audio: false,
             };
-            // to mirror the video element when it isnt 'environment'
 
-            // it it finds the videoSource 'environment', modify constraints.video
-            for (const sourceInfo of sourceInfos) {
-                if(sourceInfo.kind ==='video' && sourceInfo.facing ==='user') {
-                    constraints.video = {
-                        optional: [{sourceId: sourceInfo.id}]
-                    };
+            for (var i = 0; i != sourceInfos.length; ++i) {
+                var sourceInfo = sourceInfos[i];
+                //这里会遍历audio,video，所以要加以区分
+                if (sourceInfo.kind === 'video') {
+                    exArray.push(sourceInfo.id);
                 }
             }
-
-            // try to get user media
-            navigator.mediaDevices.getUserMedia( constraints )
-                .then(function(stream){
-                domElement.src = URL.createObjectURL(stream);
-            })
-                .catch(function(error) {
-                alert('Cant getUserMedia()! due to ', error);
-            });
         })
+        function getMedia() {
+            if (navigator.getUserMedia) {
+                navigator.getUserMedia({
+                    'video': {
+                        'optional': [{
+                            'sourceId': exArray[1] //0为前置摄像头，1为后置
+                        }]
+                    }
+
+
+                    // try to get user media
+                    navigator.mediaDevices.getUserMedia(constraints)
+                    .then(function (stream) {
+                        domElement.src = URL.createObjectURL(stream);
+                    })
+                    .catch(function (error) {
+                        alert('Cant getUserMedia()! due to ', error);
+                    })
+            })
 
         return domElement;
     }
