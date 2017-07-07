@@ -127,7 +127,7 @@ window.onload = function() {
 
             // it it finds the videoSource 'environment', modify constraints.video
             for (const sourceInfo of sourceInfos) {
-                if(sourceInfo.kind == 'video' && sourceInfo.facing == 'environment') {
+                if(sourceInfo.kind ==='video' && sourceInfo.facing ==='environment') {
                     constraints.video = {
                         optional: [{sourceId: sourceInfo.id}]
                     };
@@ -135,12 +135,14 @@ window.onload = function() {
             }
 
             // try to get user media
-            navigator.getUserMedia( constraints, function(stream){
+            navigator.mediaDevices.getUserMedia( constraints )
+                .then(function(stream){
                 domElement.src = URL.createObjectURL(stream);
-            }, error => {
+            })
+                .catch(function(error) {
                 alert('Cant getUserMedia()! due to ', error);
             });
-        });
+        })
 
         return domElement;
     }
