@@ -141,6 +141,24 @@ window.onload = function() {
                             'sourceId': exArray[1] //0为前置摄像头，1为后置
                         }]
                     }
+                    
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+          console.log("enumerateDevices() not supported.");
+          return;
+      }
+
+// 列出摄像头和麦克风
+
+      navigator.mediaDevices.enumerateDevices()
+          .then(function(devices) {
+              devices.forEach(function(device) {
+                  console.log(device.kind + ": " + device.label +
+                      " id = " + device.deviceId);
+              });
+          })
+          .catch(function(err) {
+              console.log(err.name + ": " + err.message);
+          });
 
 
                     // try to get user media
